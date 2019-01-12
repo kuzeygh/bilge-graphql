@@ -1,0 +1,10 @@
+endpoint: https://eu1.prisma.sh/soylemezali42-498aa2/bilge-example/dev
+datamodel: datamodel.prisma
+
+generate:
+  - generator: javascript-client
+    output: ./generated/prisma-client/
+
+hooks:
+  post-deploy:
+    - graphql get-schema
