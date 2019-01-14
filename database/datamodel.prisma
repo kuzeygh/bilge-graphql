@@ -4,3 +4,10 @@ type Post {
   content: String!
   published: Boolean! @default(value: "false")
 }
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String!
+}
