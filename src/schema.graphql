@@ -11,8 +11,9 @@ type Mutation {
   createPost(title: String!, content: String!): Post
   createUser(name: String!, email: String!, password: String!): AuthPayload
   loginUser(email: String!, password: String!): AuthPayload
-  deletePost(id: ID!): Post
-  publish(id: ID!): Post
+  deletePost(postId: ID!): Post
+  publishPost(postId: ID!): Post
+  updatePost(postId: ID!, title: String!, content: String!): Post
 }
 
 type AuthPayload {

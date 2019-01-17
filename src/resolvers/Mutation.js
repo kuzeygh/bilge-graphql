@@ -18,15 +18,25 @@ function createPost(parent, { title, content }, ctx, info) {
   );
 }
 
-function deletePost(parent, { id }, ctx, info) {
-  return ctx.db.mutation.deletePost({ where: { id } }, info);
+function deletePost(parent, { postId }, ctx, info) {
+  return ctx.db.mutation.deletePost({ where: { id: postId } }, info);
 }
 
-function publish(parent, args, ctx, info) {
+function publishPost(parent, args, ctx, info) {
   return ctx.db.mutation.updatePost(
     {
-      where: { id },
+      where: { id: args.postId },
       data: { published: true }
+    },
+    info
+  );
+}
+
+function updatePost(parent, args, ctx, info) {
+  return ctx.db.mutation.updatePost(
+    {
+      where: { id: args.postId },
+      data: { title: args.title, content: args.content }
     },
     info
   );
@@ -66,7 +76,8 @@ async function loginUser(parent, args, ctx, info) {
 module.exports = {
   createPost,
   deletePost,
-  publish,
+  publishPost,
+  updatePost,
   createUser,
   loginUser
 };
