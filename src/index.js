@@ -2,14 +2,11 @@ const { GraphQLServer } = require("graphql-yoga");
 const { Prisma } = require("prisma-binding");
 const Query = require("./resolvers/Query");
 const Mutation = require("./resolvers/Mutation");
-// const Post = require("./resolvers/Post");
-// const User = require("./resolvers/User");
+const express = require("express");
 
 const resolvers = {
   Query,
   Mutation
-  // Post,
-  // User
 };
 
 const server = new GraphQLServer({
@@ -25,6 +22,8 @@ const server = new GraphQLServer({
     })
   })
 });
+
+server.express.use("/images", express.static("images"));
 
 server.start(() =>
   console.log(`The server is running on https://localhost:4000`)

@@ -10,8 +10,13 @@ function userById(parent, args, ctx, info) {
   return ctx.db.query.user({ where: { id: args.userId } }, info);
 }
 
+function imageById(parent, args, ctx, info) {
+  return ctx.db.query.postImage({ where: { id: args.imageId } });
+}
+
 module.exports = {
   postList,
   postById,
-  userById
+  userById,
+  imageById
 };
