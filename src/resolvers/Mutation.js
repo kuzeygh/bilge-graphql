@@ -23,17 +23,27 @@ const processUpload = async upload => {
   return path;
 };
 
-async function createPost(parent, { title, content, picture }, ctx, info) {
+async function createPost(parent, { title, content }, ctx, info) {
   const userId = getUserId(ctx);
   return ctx.db.mutation.createPost(
     {
       data: {
         title,
         content,
-        pictureURL: await processUpload(picture),
         author: {
           connect: { id: userId }
         }
+      }
+    },
+    info
+  );
+}
+
+async function createPostImage(parent, { picture }, ctx, info) {
+  return ctx.db.mutation.createPostImage(
+    {
+      data: {
+        pictureURL: await processUpload(picture)
       }
     },
     info
@@ -97,6 +107,7 @@ async function loginUser(parent, args, ctx, info) {
 
 module.exports = {
   createPost,
+  createPostImage,
   deletePost,
   publishPost,
   updatePost,

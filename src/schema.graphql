@@ -1,5 +1,6 @@
 # import Post from "./generated/prisma.graphql"
 # import User from "./generated/prisma.graphql"
+# import PostImage from "./generated/prisma.graphql"
 
 scalar Upload
 
@@ -10,7 +11,8 @@ type Query {
 }
 
 type Mutation {
-  createPost(title: String!, content: String!, picture: Upload): Post
+  createPost(title: String!, content: String!): Post
+  createPostImage(picture: Upload!): PostImage!
   createUser(name: String!, email: String!, password: String!): AuthPayload
   loginUser(email: String!, password: String!): AuthPayload
   deletePost(postId: ID!): Post

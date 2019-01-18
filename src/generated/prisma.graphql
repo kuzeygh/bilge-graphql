@@ -1,7 +1,11 @@
 # source: https://eu1.prisma.sh/soylemezali42-498aa2/bilge-example/dev
-# timestamp: Sat Jan 19 2019 01:07:49 GMT+0300 (Türkiye Standart Saati)
+# timestamp: Sat Jan 19 2019 01:45:41 GMT+0300 (Türkiye Standart Saati)
 
 type AggregatePost {
+  count: Int!
+}
+
+type AggregatePostImage {
   count: Int!
 }
 
@@ -23,16 +27,22 @@ scalar Long
 type Mutation {
   createPost(data: PostCreateInput!): Post!
   createUser(data: UserCreateInput!): User!
+  createPostImage(data: PostImageCreateInput!): PostImage!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updatePostImage(data: PostImageUpdateInput!, where: PostImageWhereUniqueInput!): PostImage
   deletePost(where: PostWhereUniqueInput!): Post
   deleteUser(where: UserWhereUniqueInput!): User
+  deletePostImage(where: PostImageWhereUniqueInput!): PostImage
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertPostImage(where: PostImageWhereUniqueInput!, create: PostImageCreateInput!, update: PostImageUpdateInput!): PostImage!
   updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyPostImages(data: PostImageUpdateManyMutationInput!, where: PostImageWhereInput): BatchPayload!
   deleteManyPosts(where: PostWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyPostImages(where: PostImageWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -66,7 +76,7 @@ type Post implements Node {
   id: ID!
   title: String!
   content: String!
-  pictureURL: String
+  pictures(where: PostImageWhereInput, orderBy: PostImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PostImage!]
   published: Boolean!
   author: User
 }
@@ -84,8 +94,8 @@ type PostConnection {
 input PostCreateInput {
   title: String!
   content: String!
-  pictureURL: String
   published: Boolean
+  pictures: PostImageCreateManyInput
   author: UserCreateOneWithoutPostsInput
 }
 
@@ -97,8 +107,8 @@ input PostCreateManyWithoutAuthorInput {
 input PostCreateWithoutAuthorInput {
   title: String!
   content: String!
-  pictureURL: String
   published: Boolean
+  pictures: PostImageCreateManyInput
 }
 
 """An edge in a connection."""
@@ -110,6 +120,324 @@ type PostEdge {
   cursor: String!
 }
 
+type PostImage implements Node {
+  id: ID!
+  pictureURL: String!
+}
+
+"""A connection to a list of items."""
+type PostImageConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostImageEdge]!
+  aggregate: AggregatePostImage!
+}
+
+input PostImageCreateInput {
+  pictureURL: String!
+}
+
+input PostImageCreateManyInput {
+  create: [PostImageCreateInput!]
+  connect: [PostImageWhereUniqueInput!]
+}
+
+"""An edge in a connection."""
+type PostImageEdge {
+  """The item at the end of the edge."""
+  node: PostImage!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PostImageOrderByInput {
+  id_ASC
+  id_DESC
+  pictureURL_ASC
+  pictureURL_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type PostImagePreviousValues {
+  id: ID!
+  pictureURL: String!
+}
+
+input PostImageScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PostImageScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PostImageScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PostImageScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  pictureURL: String
+
+  """All values that are not equal to given value."""
+  pictureURL_not: String
+
+  """All values that are contained in given list."""
+  pictureURL_in: [String!]
+
+  """All values that are not contained in given list."""
+  pictureURL_not_in: [String!]
+
+  """All values less than the given value."""
+  pictureURL_lt: String
+
+  """All values less than or equal the given value."""
+  pictureURL_lte: String
+
+  """All values greater than the given value."""
+  pictureURL_gt: String
+
+  """All values greater than or equal the given value."""
+  pictureURL_gte: String
+
+  """All values containing the given string."""
+  pictureURL_contains: String
+
+  """All values not containing the given string."""
+  pictureURL_not_contains: String
+
+  """All values starting with the given string."""
+  pictureURL_starts_with: String
+
+  """All values not starting with the given string."""
+  pictureURL_not_starts_with: String
+
+  """All values ending with the given string."""
+  pictureURL_ends_with: String
+
+  """All values not ending with the given string."""
+  pictureURL_not_ends_with: String
+}
+
+type PostImageSubscriptionPayload {
+  mutation: MutationType!
+  node: PostImage
+  updatedFields: [String!]
+  previousValues: PostImagePreviousValues
+}
+
+input PostImageSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PostImageSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PostImageSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PostImageSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PostImageWhereInput
+}
+
+input PostImageUpdateDataInput {
+  pictureURL: String
+}
+
+input PostImageUpdateInput {
+  pictureURL: String
+}
+
+input PostImageUpdateManyDataInput {
+  pictureURL: String
+}
+
+input PostImageUpdateManyInput {
+  create: [PostImageCreateInput!]
+  connect: [PostImageWhereUniqueInput!]
+  set: [PostImageWhereUniqueInput!]
+  disconnect: [PostImageWhereUniqueInput!]
+  delete: [PostImageWhereUniqueInput!]
+  update: [PostImageUpdateWithWhereUniqueNestedInput!]
+  updateMany: [PostImageUpdateManyWithWhereNestedInput!]
+  deleteMany: [PostImageScalarWhereInput!]
+  upsert: [PostImageUpsertWithWhereUniqueNestedInput!]
+}
+
+input PostImageUpdateManyMutationInput {
+  pictureURL: String
+}
+
+input PostImageUpdateManyWithWhereNestedInput {
+  where: PostImageScalarWhereInput!
+  data: PostImageUpdateManyDataInput!
+}
+
+input PostImageUpdateWithWhereUniqueNestedInput {
+  where: PostImageWhereUniqueInput!
+  data: PostImageUpdateDataInput!
+}
+
+input PostImageUpsertWithWhereUniqueNestedInput {
+  where: PostImageWhereUniqueInput!
+  update: PostImageUpdateDataInput!
+  create: PostImageCreateInput!
+}
+
+input PostImageWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PostImageWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PostImageWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PostImageWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  pictureURL: String
+
+  """All values that are not equal to given value."""
+  pictureURL_not: String
+
+  """All values that are contained in given list."""
+  pictureURL_in: [String!]
+
+  """All values that are not contained in given list."""
+  pictureURL_not_in: [String!]
+
+  """All values less than the given value."""
+  pictureURL_lt: String
+
+  """All values less than or equal the given value."""
+  pictureURL_lte: String
+
+  """All values greater than the given value."""
+  pictureURL_gt: String
+
+  """All values greater than or equal the given value."""
+  pictureURL_gte: String
+
+  """All values containing the given string."""
+  pictureURL_contains: String
+
+  """All values not containing the given string."""
+  pictureURL_not_contains: String
+
+  """All values starting with the given string."""
+  pictureURL_starts_with: String
+
+  """All values not starting with the given string."""
+  pictureURL_not_starts_with: String
+
+  """All values ending with the given string."""
+  pictureURL_ends_with: String
+
+  """All values not ending with the given string."""
+  pictureURL_not_ends_with: String
+}
+
+input PostImageWhereUniqueInput {
+  id: ID
+}
+
 enum PostOrderByInput {
   id_ASC
   id_DESC
@@ -117,8 +445,6 @@ enum PostOrderByInput {
   title_DESC
   content_ASC
   content_DESC
-  pictureURL_ASC
-  pictureURL_DESC
   published_ASC
   published_DESC
   updatedAt_ASC
@@ -131,7 +457,6 @@ type PostPreviousValues {
   id: ID!
   title: String!
   content: String!
-  pictureURL: String
   published: Boolean!
 }
 
@@ -264,46 +589,6 @@ input PostScalarWhereInput {
 
   """All values not ending with the given string."""
   content_not_ends_with: String
-  pictureURL: String
-
-  """All values that are not equal to given value."""
-  pictureURL_not: String
-
-  """All values that are contained in given list."""
-  pictureURL_in: [String!]
-
-  """All values that are not contained in given list."""
-  pictureURL_not_in: [String!]
-
-  """All values less than the given value."""
-  pictureURL_lt: String
-
-  """All values less than or equal the given value."""
-  pictureURL_lte: String
-
-  """All values greater than the given value."""
-  pictureURL_gt: String
-
-  """All values greater than or equal the given value."""
-  pictureURL_gte: String
-
-  """All values containing the given string."""
-  pictureURL_contains: String
-
-  """All values not containing the given string."""
-  pictureURL_not_contains: String
-
-  """All values starting with the given string."""
-  pictureURL_starts_with: String
-
-  """All values not starting with the given string."""
-  pictureURL_not_starts_with: String
-
-  """All values ending with the given string."""
-  pictureURL_ends_with: String
-
-  """All values not ending with the given string."""
-  pictureURL_not_ends_with: String
   published: Boolean
 
   """All values that are not equal to given value."""
@@ -352,22 +637,20 @@ input PostSubscriptionWhereInput {
 input PostUpdateInput {
   title: String
   content: String
-  pictureURL: String
   published: Boolean
+  pictures: PostImageUpdateManyInput
   author: UserUpdateOneWithoutPostsInput
 }
 
 input PostUpdateManyDataInput {
   title: String
   content: String
-  pictureURL: String
   published: Boolean
 }
 
 input PostUpdateManyMutationInput {
   title: String
   content: String
-  pictureURL: String
   published: Boolean
 }
 
@@ -391,8 +674,8 @@ input PostUpdateManyWithWhereNestedInput {
 input PostUpdateWithoutAuthorDataInput {
   title: String
   content: String
-  pictureURL: String
   published: Boolean
+  pictures: PostImageUpdateManyInput
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -535,50 +818,13 @@ input PostWhereInput {
 
   """All values not ending with the given string."""
   content_not_ends_with: String
-  pictureURL: String
-
-  """All values that are not equal to given value."""
-  pictureURL_not: String
-
-  """All values that are contained in given list."""
-  pictureURL_in: [String!]
-
-  """All values that are not contained in given list."""
-  pictureURL_not_in: [String!]
-
-  """All values less than the given value."""
-  pictureURL_lt: String
-
-  """All values less than or equal the given value."""
-  pictureURL_lte: String
-
-  """All values greater than the given value."""
-  pictureURL_gt: String
-
-  """All values greater than or equal the given value."""
-  pictureURL_gte: String
-
-  """All values containing the given string."""
-  pictureURL_contains: String
-
-  """All values not containing the given string."""
-  pictureURL_not_contains: String
-
-  """All values starting with the given string."""
-  pictureURL_starts_with: String
-
-  """All values not starting with the given string."""
-  pictureURL_not_starts_with: String
-
-  """All values ending with the given string."""
-  pictureURL_ends_with: String
-
-  """All values not ending with the given string."""
-  pictureURL_not_ends_with: String
   published: Boolean
 
   """All values that are not equal to given value."""
   published_not: Boolean
+  pictures_every: PostImageWhereInput
+  pictures_some: PostImageWhereInput
+  pictures_none: PostImageWhereInput
   author: UserWhereInput
 }
 
@@ -589,10 +835,13 @@ input PostWhereUniqueInput {
 type Query {
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  postImages(where: PostImageWhereInput, orderBy: PostImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PostImage]!
   post(where: PostWhereUniqueInput!): Post
   user(where: UserWhereUniqueInput!): User
+  postImage(where: PostImageWhereUniqueInput!): PostImage
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  postImagesConnection(where: PostImageWhereInput, orderBy: PostImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostImageConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -604,6 +853,7 @@ type Query {
 type Subscription {
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  postImage(where: PostImageSubscriptionWhereInput): PostImageSubscriptionPayload
 }
 
 type User implements Node {
