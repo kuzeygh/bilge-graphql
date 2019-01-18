@@ -1,5 +1,5 @@
 /node_modules
-
+/images
 # misc
 .DS_Store
 .env.local

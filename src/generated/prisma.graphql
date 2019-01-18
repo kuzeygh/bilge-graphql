@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/soylemezali42-498aa2/bilge-example/dev
-# timestamp: Thu Jan 17 2019 00:51:17 GMT+0300 (Türkiye Standart Saati)
+# timestamp: Sat Jan 19 2019 01:07:49 GMT+0300 (Türkiye Standart Saati)
 
 type AggregatePost {
   count: Int!
@@ -66,6 +66,7 @@ type Post implements Node {
   id: ID!
   title: String!
   content: String!
+  pictureURL: String
   published: Boolean!
   author: User
 }
@@ -83,6 +84,7 @@ type PostConnection {
 input PostCreateInput {
   title: String!
   content: String!
+  pictureURL: String
   published: Boolean
   author: UserCreateOneWithoutPostsInput
 }
@@ -95,6 +97,7 @@ input PostCreateManyWithoutAuthorInput {
 input PostCreateWithoutAuthorInput {
   title: String!
   content: String!
+  pictureURL: String
   published: Boolean
 }
 
@@ -114,6 +117,8 @@ enum PostOrderByInput {
   title_DESC
   content_ASC
   content_DESC
+  pictureURL_ASC
+  pictureURL_DESC
   published_ASC
   published_DESC
   updatedAt_ASC
@@ -126,6 +131,7 @@ type PostPreviousValues {
   id: ID!
   title: String!
   content: String!
+  pictureURL: String
   published: Boolean!
 }
 
@@ -258,6 +264,46 @@ input PostScalarWhereInput {
 
   """All values not ending with the given string."""
   content_not_ends_with: String
+  pictureURL: String
+
+  """All values that are not equal to given value."""
+  pictureURL_not: String
+
+  """All values that are contained in given list."""
+  pictureURL_in: [String!]
+
+  """All values that are not contained in given list."""
+  pictureURL_not_in: [String!]
+
+  """All values less than the given value."""
+  pictureURL_lt: String
+
+  """All values less than or equal the given value."""
+  pictureURL_lte: String
+
+  """All values greater than the given value."""
+  pictureURL_gt: String
+
+  """All values greater than or equal the given value."""
+  pictureURL_gte: String
+
+  """All values containing the given string."""
+  pictureURL_contains: String
+
+  """All values not containing the given string."""
+  pictureURL_not_contains: String
+
+  """All values starting with the given string."""
+  pictureURL_starts_with: String
+
+  """All values not starting with the given string."""
+  pictureURL_not_starts_with: String
+
+  """All values ending with the given string."""
+  pictureURL_ends_with: String
+
+  """All values not ending with the given string."""
+  pictureURL_not_ends_with: String
   published: Boolean
 
   """All values that are not equal to given value."""
@@ -306,6 +352,7 @@ input PostSubscriptionWhereInput {
 input PostUpdateInput {
   title: String
   content: String
+  pictureURL: String
   published: Boolean
   author: UserUpdateOneWithoutPostsInput
 }
@@ -313,12 +360,14 @@ input PostUpdateInput {
 input PostUpdateManyDataInput {
   title: String
   content: String
+  pictureURL: String
   published: Boolean
 }
 
 input PostUpdateManyMutationInput {
   title: String
   content: String
+  pictureURL: String
   published: Boolean
 }
 
@@ -342,6 +391,7 @@ input PostUpdateManyWithWhereNestedInput {
 input PostUpdateWithoutAuthorDataInput {
   title: String
   content: String
+  pictureURL: String
   published: Boolean
 }
 
@@ -485,6 +535,46 @@ input PostWhereInput {
 
   """All values not ending with the given string."""
   content_not_ends_with: String
+  pictureURL: String
+
+  """All values that are not equal to given value."""
+  pictureURL_not: String
+
+  """All values that are contained in given list."""
+  pictureURL_in: [String!]
+
+  """All values that are not contained in given list."""
+  pictureURL_not_in: [String!]
+
+  """All values less than the given value."""
+  pictureURL_lt: String
+
+  """All values less than or equal the given value."""
+  pictureURL_lte: String
+
+  """All values greater than the given value."""
+  pictureURL_gt: String
+
+  """All values greater than or equal the given value."""
+  pictureURL_gte: String
+
+  """All values containing the given string."""
+  pictureURL_contains: String
+
+  """All values not containing the given string."""
+  pictureURL_not_contains: String
+
+  """All values starting with the given string."""
+  pictureURL_starts_with: String
+
+  """All values not starting with the given string."""
+  pictureURL_not_starts_with: String
+
+  """All values ending with the given string."""
+  pictureURL_ends_with: String
+
+  """All values not ending with the given string."""
+  pictureURL_not_ends_with: String
   published: Boolean
 
   """All values that are not equal to given value."""

@@ -1,14 +1,36 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { APP_SECRET, getUserId } = require("../util");
+const shortid = require("shortid");
+const { createWriteStream } = require("fs");
 
-function createPost(parent, { title, content }, ctx, info) {
+//Resim yükleme işlemi yapılıyor
+const storeUpload = async ({ stream }) => {
+  const path = `images/${shortid.generate()}`;
+
+  return new Promise((resolve, reject) =>
+    stream
+      .pipe(createWriteStream(path))
+      .on("finish", () => resolve({ path }))
+      .on("error", reject)
+  );
+};
+
+//Stream başlatıldı
+const processUpload = async upload => {
+  const { stream } = await upload;
+  const { path } = await storeUpload({ stream });
+  return path;
+};
+
+async function createPost(parent, { title, content, picture }, ctx, info) {
   const userId = getUserId(ctx);
   return ctx.db.mutation.createPost(
     {
       data: {
         title,
         content,
+        pictureURL: await processUpload(picture),
         author: {
           connect: { id: userId }
         }

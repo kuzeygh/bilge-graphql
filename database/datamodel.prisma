@@ -2,6 +2,7 @@ type Post {
   id: ID! @unique
   title: String!
   content: String!
+  pictureURL: String
   published: Boolean! @default(value: "false")
   author: User
 }
