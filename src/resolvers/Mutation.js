@@ -40,10 +40,11 @@ async function createPost(parent, { title, content }, ctx, info) {
 }
 
 async function createPostImage(parent, { picture }, ctx, info) {
+  const pictureURL = await processUpload(picture);
   return ctx.db.mutation.createPostImage(
     {
       data: {
-        pictureURL: await processUpload(picture)
+        pictureURL: `http://localhost:4000/${pictureURL}`
       }
     },
     info

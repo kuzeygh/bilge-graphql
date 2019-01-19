@@ -8,7 +8,7 @@ type Query {
   postList: [Post!]!
   postById(postId: ID!): Post
   userById(userId: ID!): User
-  imageByID(imageId: ID!): PostImage
+  imageById(imageId: ID!): PostImage
 }
 
 type Mutation {
