@@ -7,7 +7,7 @@ scalar Upload
 type Query {
   postList: [Post!]!
   postById(postId: ID!): Post
-  userById(userId: ID!): User
+  userPostsById(userId: ID!): User
   imageById(imageId: ID!): PostImage
 }
 
