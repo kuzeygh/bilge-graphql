@@ -82,7 +82,10 @@ async function createUser(parent, args, ctx, info) {
     data: { ...args, password }
   });
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET);
+  const token = jwt.sign(
+    { userId: user.id, name: user.name, email: user.email },
+    APP_SECRET
+  );
 
   return { token, user };
 }
@@ -98,7 +101,10 @@ async function loginUser(parent, args, ctx, info) {
     throw new Error("Şifre yanlış");
   }
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET);
+  const token = jwt.sign(
+    { userId: user.id, name: user.name, email: user.email },
+    APP_SECRET
+  );
 
   return {
     token,
