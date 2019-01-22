@@ -92,6 +92,7 @@ async function createUser(parent, args, ctx, info) {
 
 async function loginUser(parent, args, ctx, info) {
   const user = await ctx.db.query.user({ where: { email: args.email } });
+
   if (!user) {
     throw new Error("Böyle bir kullanıcı yok");
   }
