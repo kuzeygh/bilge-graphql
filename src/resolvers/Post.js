@@ -1,7 +1,7 @@
-// function author(parent, args, ctx, info) {
-//   return ctx.db.query.post({ where: { id: parent.id } }).user({ where: { id: }});
-// }
+function author(parent, args, ctx, info) {
+  return ctx.prisma.post({ id: parent.id }).author();
+}
 
-// module.exports = {
-//   author
-// };
+module.exports = {
+  author
+};

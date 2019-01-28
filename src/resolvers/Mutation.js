@@ -25,15 +25,25 @@ const processUpload = async upload => {
 
 async function createPost(parent, { title, content }, ctx, info) {
   const userId = getUserId(ctx);
-  return ctx.db.mutation.createPost(
+  return ctx.prisma.createPost(
     {
-      data: {
-        title,
-        content,
-        author: {
-          connect: { id: userId }
-        }
+      title,
+      content,
+      author: {
+        connect: { id: userId }
       }
+    },
+    info
+  );
+}
+
+async function createVote(parent, args, ctx, info) {
+  const userId = getUserId(ctx);
+
+  return ctx.prisma.createVote(
+    {
+      user: { connect: { id: userId } },
+      post: { connect: { id: args.postId } }
     },
     info
   );
@@ -41,7 +51,7 @@ async function createPost(parent, { title, content }, ctx, info) {
 
 async function createPostImage(parent, { picture }, ctx, info) {
   const pictureURL = await processUpload(picture);
-  return ctx.db.mutation.createPostImage(
+  return ctx.prisma.createPostImage(
     {
       data: {
         pictureURL: `http://localhost:4000/${pictureURL}`
@@ -51,12 +61,9 @@ async function createPostImage(parent, { picture }, ctx, info) {
   );
 }
 
-function deletePost(parent, { postId }, ctx, info) {
-  return ctx.db.mutation.deletePost({ where: { id: postId } }, info);
-}
-
+//Burada userId kullanılmamış bundan dolayı publish bu rotanın sadece kullanıcıya açık olmasına dikkat etmek lazım.
 function publishPost(parent, args, ctx, info) {
-  return ctx.db.mutation.updatePost(
+  return ctx.prisma.updatePost(
     {
       where: { id: args.postId },
       data: { published: true }
@@ -66,7 +73,7 @@ function publishPost(parent, args, ctx, info) {
 }
 
 function updatePost(parent, args, ctx, info) {
-  return ctx.db.mutation.updatePost(
+  return ctx.prisma.updatePost(
     {
       where: { id: args.postId },
       data: { title: args.title, content: args.content }
@@ -78,9 +85,7 @@ function updatePost(parent, args, ctx, info) {
 async function createUser(parent, args, ctx, info) {
   const password = await bcrypt.hash(args.password, 10);
 
-  const user = await ctx.db.mutation.createUser({
-    data: { ...args, password }
-  });
+  const user = await ctx.prisma.createUser({ ...args, password });
 
   const token = jwt.sign(
     { userId: user.id, name: user.name, email: user.email },
@@ -91,7 +96,7 @@ async function createUser(parent, args, ctx, info) {
 }
 
 async function loginUser(parent, args, ctx, info) {
-  const user = await ctx.db.query.user({ where: { email: args.email } });
+  const user = await ctx.prisma.user({ email: args.email });
 
   if (!user) {
     throw new Error("Böyle bir kullanıcı yok");
@@ -113,12 +118,17 @@ async function loginUser(parent, args, ctx, info) {
   };
 }
 
+function deletePost(parent, { postId }, ctx, info) {
+  return ctx.prisma.deletePost({ id: postId }, info);
+}
+
 module.exports = {
+  createUser,
   createPost,
   createPostImage,
+  createVote,
   deletePost,
   publishPost,
   updatePost,
-  createUser,
   loginUser
 };

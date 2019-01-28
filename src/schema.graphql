@@ -1,6 +1,9 @@
 # import Post from "./generated/prisma.graphql"
 # import User from "./generated/prisma.graphql"
 # import PostImage from "./generated/prisma.graphql"
+# import Vote from "./generated/prisma.graphql"
+
+# Subcription için büyük ihtimalle Vote Subscription payload'ı eklemek gerekiyor anladığım kadarıyla.
 
 scalar Upload
 
@@ -14,11 +17,16 @@ type Query {
 type Mutation {
   createPost(title: String!, content: String!): Post
   createPostImage(picture: Upload!): PostImage!
+  createVote(postId: ID!): Vote
   createUser(name: String!, email: String!, password: String!): AuthPayload
   loginUser(email: String!, password: String!): AuthPayload
   deletePost(postId: ID!): Post
   publishPost(postId: ID!): Post
   updatePost(postId: ID!, title: String!, content: String!): Post
+}
+
+type Subscription {
+  newVote: Vote
 }
 
 type AuthPayload {

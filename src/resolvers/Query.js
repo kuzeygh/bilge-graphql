@@ -1,17 +1,17 @@
 function postList(parent, args, ctx, info) {
-  return ctx.db.query.posts({}, info);
+  return ctx.prisma.posts({}, info);
 }
 
 function postById(parent, args, ctx, info) {
-  return ctx.db.query.post({ where: { id: args.postId } }, info);
+  return ctx.prisma.post({ id: args.postId }, info);
 }
 
 function userPostsById(parent, args, ctx, info) {
-  return ctx.db.query.user({ where: { id: args.userId } }, info);
+  return ctx.prisma.user({ id: args.userId }, info);
 }
 
 function imageById(parent, args, ctx, info) {
-  return ctx.db.query.postImage({ where: { id: args.imageId } });
+  return ctx.prisma.postImage({ id: args.imageId }, info);
 }
 
 module.exports = {

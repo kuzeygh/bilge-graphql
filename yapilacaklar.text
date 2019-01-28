@@ -1,0 +1,17 @@
+Bütün mutationları kontrol et
+
+1) createPost-OK
+2) createVote-OK  Subscriptionla birlikte çalışıyor
+3) createPostImage(Bu işlemi client tarafından yüklemek lazım)
+4) deletePost-OK
+5) Publish post-OK
+6) updatePost-OK
+7) createUser-OK
+8) loginUser-OK
+
+
+Bütün Queryleri kontrol et
+1) postList-OK
+2) postById-OK
+3) userPostsById-OK
+4) imageById 
